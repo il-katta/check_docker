@@ -19,7 +19,6 @@ __copyright__ = "Copyright 2017"
 __credits__ = ['Tim Laurence']
 __license__ = "GPL"
 __version__ = "1.0.5"
-
 '''
 nrpe compatible check for docker containers.
 
@@ -207,7 +206,10 @@ def get_stats(container):
 
 def get_containers(names, require_present):
     containers_list, _ = get_url(daemon + '/containers/json?all=1')
-    all_container_names = set(x['Names'][0][1:] for x in containers_list)
+    all_container_names = []
+    for c in containers_list:
+        for n in c['Names']:
+            all_container_names.append(n[1:])
     if 'all' in names:
         return all_container_names
 
